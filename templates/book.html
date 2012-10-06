@@ -7,6 +7,7 @@
   <body>
     <h1>${title}</h1>
     <div id="page">
+      <h2>Home</h2>
       <p><a href="">Edit</a></p>
       <div id="page_body">
 	${page_body}
@@ -21,7 +22,13 @@
       </div>
     </div>
     <div id="contents">
+      <h2>Contents</h2>
       ${contents}
+      <form action='' method='GET'>
+	<h2>Create a new page</h2>
+	<input type="text" name="page_name"/>
+	<input type="submit" value="create"/>
+      </form>
     </div>
   </body>
 </html>
