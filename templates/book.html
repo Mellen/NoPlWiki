@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+    <title>Planning ${title}</title>
+  </head>
+  <body>
+    <h1>${title}</h1>
+    <div id="page">
+      <p><a href="">Edit</a></p>
+      <div id="page_body">
+	${page_body}
+      </div>
+      <div id="page_body_edit">
+	<form action="" method="POST">
+	  <textarea name="page_body_text" id="page_body_text">
+	    ${page_body_raw}
+	  </textarea>
+	  <input type="submit" value="update"/>
+	</form>
+      </div>
+    </div>
+    <div id="contents">
+      ${contents}
+    </div>
+  </body>
+</html>
