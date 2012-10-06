@@ -1,1 +1,4 @@
 cherrypy
+git+https://github.com/mongodb/mongo-python-driver#egg=mongo-python-driver
+mako
+markdown
