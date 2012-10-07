@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+    <title>Planning ${title}</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="/js/page.js"></script>
+  </head>
+  <body>
+    <h1><a href="main_page">${title}</a></h1>
+    <div id="page">
+      <h2>${page_name}</h2>
+      <p><a id="editSwitch" href="">Edit</a></p>
+      <div id="page_body">
+	${page_body}
+      </div>
+      <div id="page_body_edit">
+	<form action="" method="POST">
+	  <textarea cols="80" rows="25" name="page_body_text" id="page_body_text">${page_body_raw}</textarea>
+	  <p><a id="cancelEdit" href="">Cancel</a><input type="submit" value="update"/></p>
+	</form>
+      </div>
+    </div>
+  </body>
+</html>
