@@ -1,0 +1,16 @@
+jQuery(document).ready(function()
+		       {
+			   jQuery('#page_body_edit').hide();
+			   jQuery('#editSwitch').click(function(e)
+						       {
+							   e.preventDefault();
+							   jQuery('#page_body_edit').show();
+							   jQuery('#page_body').hide();
+						       });
+			   jQuery('#cancelEdit').click(function(e)
+						       {
+							   e.preventDefault();
+							   jQuery('#page_body_edit').hide();
+							   jQuery('#page_body').show();
+						       });
+		       });
