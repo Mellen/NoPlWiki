@@ -2,6 +2,8 @@
 import cherrypy
 from pymongo import Connection
 from classes.book import book
+from mako.template import Template
+import markdown
 import os
 
 class Server(object):
@@ -13,11 +15,14 @@ class Server(object):
 
     @cherrypy.expose
     def index(self):
-        html = ''
-        with open(r'static_pages/index.html', 'r') as f:
-            for line in f:
-                html += line
-        return html    
+        template = Template(filename='templates/index.html')
+        books = self.connection.books
+        books_md = ''
+        for book in books.collection_names():
+            if book == 'system.indexes':
+                continue
+            books_md += ' - [{0}](book/{0})\n'.format(book)
+        return template.render(book_list=markdown.markdown(books_md))
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
