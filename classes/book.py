@@ -45,7 +45,9 @@ class book(object):
         contents = collection.find({}, {'_id':0, 'page_name':1})
         contents_md = ''
         extra = ''
-        if 'title' in cherrypy.request.params:
+        if cherrypy.request.path_info.count('/') == 2:
+            extra = title+'/'
+        elif cherrypy.request.path_info.count('/') == 1:
             extra = 'book/'+title+'/'
         for item in contents:
             if item['page_name'] != 'main_page':
