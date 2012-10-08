@@ -11,6 +11,8 @@ class book(object):
     exposed = True
 
     def GET(self, title=None, page_name='main_page'):
+        if cherrypy.request.path_info.count('/') != 3:
+            raise cherrypy.HTTPRedirect('/book/{0}/{1}'.format(title, page_name))
         collection = self.db[title]
         page_data = collection.find_one({'page_name':page_name})
         if page_name == 'main_page':
@@ -19,11 +21,9 @@ class book(object):
             template = Template(filename='templates/page.html')
 
         if page_data is None:
+            page_data = self.createPage(collection, page_name)
             if page_name == 'main_page':
-                page_data = self.createPage(collection)
                 page_data['contents'] = ''
-            else:
-                page_data = self.createPage(collection, page_name)
             page_data['page_body'] = ''
         else:
             if page_name == 'main_page':
@@ -44,14 +44,9 @@ class book(object):
     def buildContents(self, collection, title):
         contents = collection.find({}, {'_id':0, 'page_name':1})
         contents_md = ''
-        extra = ''
-        if cherrypy.request.path_info.count('/') == 2:
-            extra = title+'/'
-        elif cherrypy.request.path_info.count('/') == 1:
-            extra = 'book/'+title+'/'
         for item in contents:
             if item['page_name'] != 'main_page':
-                contents_md += ' - [{0}]({1}{0})\n'.format(item['page_name'], extra)
+                contents_md += ' - [{0}]({0})\n'.format(item['page_name'])
         return markdown.markdown(contents_md)
 
     def POST(self, title=None, page_name='main_page', page_body_text=None):
