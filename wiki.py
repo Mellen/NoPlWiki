@@ -17,12 +17,14 @@ class Server(object):
     def index(self):
         template = Template(filename='templates/index.html')
         books = self.connection.books
-        books_md = ''
-        for book in books.collection_names():
-            if book == 'system.indexes':
-                continue
-            books_md += ' - [{0}](book/{0})\n'.format(book)
-        return template.render(book_list=markdown.markdown(books_md))
+        return template.render(book_list=books.collection_names())
+
+    @cherrypy.expose
+    def deleteBook(self, bookTitle):
+        books = self.connection.books
+        books.drop_collection(bookTitle)
+        template = Template(filename='templates/booklist.html')
+        return template.render(book_list=books.collection_names())
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 

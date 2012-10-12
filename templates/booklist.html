@@ -1,0 +1,11 @@
+      % for book in book_list:
+          % if book != 'system.indexes':
+              ${make_list_item(book)}
+          % endif
+      % endfor
+
+<%def name="make_list_item(book)">
+<li>
+  <a href="book/${book}">${book}</a> <input type="button" value="Delete"  id="delete${book}" />
+</li>
+</%def>
