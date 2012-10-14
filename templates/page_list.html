@@ -1,0 +1,9 @@
+% for page in pages:
+    ${make_list_item(page)}
+% endfor
+
+<%def name="make_list_item(page)">
+<li>
+  <a href="${page}">${page}</a> <input type="button" value="Delete" id="delete${title}_${page}" />
+</li>
+</%def>

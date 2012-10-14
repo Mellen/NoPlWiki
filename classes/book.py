@@ -23,11 +23,11 @@ class book(object):
         if page_data is None:
             page_data = self.createPage(collection, page_name)
             if page_name == 'main_page':
-                page_data['contents'] = ''
+                page_data['pages'] = []
             page_data['page_body'] = ''
         else:
             if page_name == 'main_page':
-                page_data['contents'] = self.buildContents(collection, title)
+                page_data['pages'] = self.buildContents(collection)
             page_data['page_body'] = markdown.markdown(page_data['page_body_raw'])
 
         page_data['title'] = title
@@ -41,13 +41,10 @@ class book(object):
         collection.insert(data)
         return data
 
-    def buildContents(self, collection, title):
+    def buildContents(self, collection):
         contents = collection.find({}, {'_id':0, 'page_name':1})
-        contents_md = ''
-        for item in contents:
-            if item['page_name'] != 'main_page':
-                contents_md += ' - [{0}]({0})\n'.format(item['page_name'])
-        return markdown.markdown(contents_md)
+        pages = [item['page_name'] for item in contents if item['page_name'] != 'main_page']
+        return pages
 
     def POST(self, title=None, page_name='main_page', page_body_text=None):
         collection = self.db[title]
@@ -55,3 +52,13 @@ class book(object):
         what = {'page_name':page_name, 'page_body_raw':page_body_text}
         collection.update(where, what, False, False)
         return self.GET(title, page_name)
+
+    def DELETE(self, title=None, page_name=None):
+        if page_name != 'main_page':
+            collection = self.db[title]
+            page = {'page_name': page_name}
+            collection.remove(page)
+            pages = self.buildContents(collection)
+            template = Template(filename='templates/page_list.html')
+            return template.render(pages=pages, title=title)
+        return self.GET(title, 'main_page')

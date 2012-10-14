@@ -23,8 +23,12 @@
     </div>
     <div id="contents">
       <h2>Contents</h2>
-      ${contents}
-      <form action='book/${title}' method='GET'>
+      <ul id="page_list">
+	% for page in pages:
+            ${make_list_item(page)}
+	% endfor
+      </ul>
+      <form action='/book/${title}' method='GET'>
 	<h2>Create a new page</h2>
 	<input type="text" name="page_name"/>
 	<input type="submit" value="create"/>
@@ -33,3 +37,9 @@
     <p><a href="/">Book list</a></p>
   </body>
 </html>
+
+<%def name="make_list_item(page)">
+<li>
+  <a href="${page}">${page}</a> <input type="button" value="Delete" id="delete${title}_${page}" />
+</li>
+</%def>
