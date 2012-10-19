@@ -2,11 +2,13 @@ import cherrypy
 import pymongo
 from mako.template import Template
 import markdown
+import os
 
 class book(object):
-    def __init__(self, mongocon):
+    def __init__(self, mongocon, root_path):
         self.connection = mongocon
         self.db = self.connection.books
+        self.root_path = root_path
 
     exposed = True
 
@@ -16,9 +18,9 @@ class book(object):
         collection = self.db[title]
         page_data = collection.find_one({'page_name':page_name})
         if page_name == 'main_page':
-            template = Template(filename='templates/book.html')
+            template = Template(filename=os.path.join(self.root_path, 'templates/book.html'))
         else:
-            template = Template(filename='templates/page.html')
+            template = Template(filename=os.path.join(self.root_path,'templates/page.html'))
 
         if page_data is None:
             page_data = self.createPage(collection, page_name)
@@ -59,6 +61,6 @@ class book(object):
             page = {'page_name': page_name}
             collection.remove(page)
             pages = self.buildContents(collection)
-            template = Template(filename='templates/page_list.html')
+            template = Template(filename=os.path.join(self.root_path,'templates/page_list.html'))
             return template.render(pages=pages, title=title)
         return self.GET(title, 'main_page')

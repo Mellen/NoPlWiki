@@ -9,13 +9,13 @@ import os
 class Server(object):
     def __init__(self):
         self.connection = Connection()
-        self.book = book(self.connection)
+        self.book = book(self.connection, current_dir)
 
     exposed = True
 
     @cherrypy.expose
     def index(self):
-        template = Template(filename='templates/index.html')
+        template = Template(filename=os.path.join(current_dir,'templates/index.html'))
         books = self.connection.books
         return template.render(book_list=books.collection_names())
 
@@ -23,7 +23,7 @@ class Server(object):
     def deleteBook(self, bookTitle):
         books = self.connection.books
         books.drop_collection(bookTitle)
-        template = Template(filename='templates/booklist.html')
+        template = Template(filename=os.path.join(current_dir,'templates/booklist.html'))
         return template.render(book_list=books.collection_names())
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
