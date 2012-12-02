@@ -1,13 +1,11 @@
 import cherrypy
-import pymongo
 from mako.template import Template
 import markdown
 import os
+from git import Repo
 
 class book(object):
-    def __init__(self, mongocon, root_path):
-        self.connection = mongocon
-        self.db = self.connection.books
+    def __init__(self, root_path):
         self.root_path = root_path
 
     exposed = True
@@ -15,37 +13,60 @@ class book(object):
     def GET(self, title=None, page_name='main_page'):
         if cherrypy.request.path_info.count('/') != 3:
             raise cherrypy.HTTPRedirect('/book/{0}/{1}'.format(title, page_name))
-        collection = self.db[title]
-        page_data = collection.find_one({'page_name':page_name})
+        pageData = None
+
+        if os.path.exists(os.path.join(self.root_path, 'books', title, page_name)):
+            with open(os.path.join(self.root_path, 'books', title, page_name), 'r') as f: 
+                pageData = {}
+                pageData['page_name'] = page_name
+                pageData['page_body_raw'] = f.read()
+
         if page_name == 'main_page':
             template = Template(filename=os.path.join(self.root_path, 'templates/book.html'))
         else:
             template = Template(filename=os.path.join(self.root_path,'templates/page.html'))
 
-        if page_data is None:
-            page_data = self.createPage(collection, page_name)
+        if pageData is None:
+            pageData = self.createPage(title, page_name)
             if page_name == 'main_page':
-                page_data['pages'] = []
-            page_data['page_body'] = ''
+                pageData['pages'] = []
+            pageData['page_body'] = ''
         else:
             if page_name == 'main_page':
-                page_data['pages'] = self.buildContents(collection)
-            page_data['page_body'] = markdown.markdown(page_data['page_body_raw'])
+                pageData['pages'] = self.buildContents(title)
+            pageData['page_body'] = markdown.markdown(pageData['page_body_raw'])
 
-        page_data['title'] = title
-        page_data['page_name'] = page_name
+        pageData['title'] = title
+        pageData['page_name'] = page_name
 
-        return template.render(**page_data)
+        return template.render(**pageData)
 
-    def createPage(self, collection, page_name='main_page'):
+    def createPage(self, title, page_name='main_page'):
         data = {'page_name': page_name
                ,'page_body_raw': ''}
-        collection.insert(data)
+        curDir = os.path.join(self.root_path, 'books', title)
+
+        if not os.path.exists(curDir):
+            os.makedirs(os.path.join(curDir, '.git'))
+            r = Repo(curDir)
+            r.git.init()
+        else:
+            r = Repo(curDir)
+        #     r = Repo.init(os.path.join(curDir, '.git'), bare=True)
+        # else:
+        #     r = Repo(curDir)
+
+        with open(os.path.join(curDir, page_name), 'w') as f:
+            f.write('')
+
+        r.git.add('.')
+        r.git.commit('-m inital commit for '+page_name)
+
         return data
 
-    def buildContents(self, collection):
-        contents = collection.find({}, {'_id':0, 'page_name':1})
-        pages = [item['page_name'] for item in contents if item['page_name'] != 'main_page']
+    def buildContents(self, title):
+        contents = os.listdir(os.path.join(self.root_path, 'books', title))
+        pages = [item['page_name'] for item in contents if item != 'main_page']
         return pages
 
     def POST(self, title=None, page_name='main_page', page_body_text=None):
