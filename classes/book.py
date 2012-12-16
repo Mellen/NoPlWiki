@@ -2,11 +2,12 @@ import cherrypy
 from mako.template import Template
 import markdown
 import os
-from git import Repo
+from gitInterface import gitInterface
 
 class book(object):
     def __init__(self, root_path):
         self.root_path = root_path
+        self.git = gitInterface()
 
     exposed = True
 
@@ -47,33 +48,35 @@ class book(object):
         curDir = os.path.join(self.root_path, 'books', title)
 
         if not os.path.exists(curDir):
-            os.makedirs(os.path.join(curDir, '.git'))
-            r = Repo(curDir)
-            r.git.init()
-        else:
-            r = Repo(curDir)
-        #     r = Repo.init(os.path.join(curDir, '.git'), bare=True)
-        # else:
-        #     r = Repo(curDir)
+            os.makedirs(curDir)
+            self.git.init(curDir)
 
-        with open(os.path.join(curDir, page_name), 'w') as f:
+        os.chdir(curDir)
+
+        with open(page_name, 'w') as f:
             f.write('')
 
-        r.git.add('.')
-        r.git.commit('-m inital commit for '+page_name)
+        self.git.add(page_name)
+        self.git.commit(page_name, 'inital commit for '+page_name)
+
+        os.chdir(self.root_path)
 
         return data
 
     def buildContents(self, title):
         contents = os.listdir(os.path.join(self.root_path, 'books', title))
-        pages = [item['page_name'] for item in contents if item != 'main_page']
+        pages = [item for item in contents if item != 'main_page' and not os.path.isdir(item)]
         return pages
 
-    def POST(self, title=None, page_name='main_page', page_body_text=None):
-        collection = self.db[title]
-        where = {'page_name':page_name}
-        what = {'page_name':page_name, 'page_body_raw':page_body_text}
-        collection.update(where, what, False, False)
+    def POST(self, title, page_name='main_page', page_body_text=None, change_message=None):
+        curDir = os.path.join(self.root_path, 'books', title)
+        os.chdir(curDir)
+        if change_message is None:
+            change_message = 'made a change to '+page_name
+        with open(page_name, 'w') as f:
+            f.write(page_body_text)
+        self.git.commit(page_name, change_message)
+        os.chdir(self.root_path)
         return self.GET(title, page_name)
 
     def DELETE(self, title=None, page_name=None):
