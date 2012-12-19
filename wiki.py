@@ -6,6 +6,11 @@ import markdown
 import os
 import shutil
 
+current_dir = os.path.dirname(os.path.abspath(__file__))
+books_dir = os.path.join(current_dir, 'books')
+if not os.path.isdir(os.path.join(current_dir, 'books')):
+    os.mkdir(os.path.join(current_dir, 'books'))
+
 class Server(object):
     def __init__(self):
         self.book = book(current_dir)
@@ -15,20 +20,15 @@ class Server(object):
     @cherrypy.expose
     def index(self):
         template = Template(filename=os.path.join(current_dir,'templates/index.html'))
-        return template.render(book_list=os.listdir('books'))
+        return template.render(book_list=os.listdir(books_dir))
 
     @cherrypy.expose
     def deleteBook(self, bookTitle):
-        currentBooks = os.listdir('books')
+        currentBooks = os.listdir(books_dir)
         if bookTitle in currentBooks:
-            shutil.rmtree(os.path.join(current_dir, 'books', bookTitle))
+            shutil.rmtree(os.path.join(books_dir, bookTitle))
         template = Template(filename=os.path.join(current_dir,'templates/booklist.html'))
-        return template.render(book_list=os.listdir('books'))
-
-current_dir = os.path.dirname(os.path.abspath(__file__))
-
-if not os.path.isdir(os.path.join(current_dir, 'books')):
-    os.mkdir(os.path.join(current_dir, 'books'))
+        return template.render(book_list=os.listdir(books_dir))
 
 conf = {
     'global': {
