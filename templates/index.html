@@ -8,20 +8,29 @@
     <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="css/default.css" type="text/css"> 
   </head>
-  <body class="container">
-    <h1>Novel Planning Wiki</h1>
-    <form action="book" method="GET" class="panel">
-      <p><label>Novel Title:</label> <input type="text" name="title"/></p>
-      <p><input type="submit" class="btn btn-success" value="Create Novel Plan"/></p>
-    </form>
-    <div>
-      <h2>Novel Plans</h2>
-      <ul id="bookList" class="panel">
-      % for book in book_list:
-          % if book != 'system.indexes':
+  <body>
+    <div id="maindiv" class="container">
+      <h1>Novel Planning Wiki</h1>
+      <div class="container-fluid">
+	<div class="row-fluid">
+	  <div class="span6">
+	    <h3>Novel Plans</h3>
+	    <ul id="bookList" class="panel">
+	      % for book in book_list:
+              % if book != 'system.indexes':
               ${make_list_item(book)}
-          % endif
-      % endfor
+              % endif
+	      % endfor
+	    </ul>
+	  </div>
+	  <form action="book" method="GET" class="span4 offset2 panel">
+	    <p><label>Novel Title:</label> <input type="text" name="title"/></p>
+	    <p><input type="submit" class="btn btn-success" value="Create Novel Plan"/></p>
+	  </form>
+	</div>
+      </div>
+      <ul id="footer" class="breadcrumb">
+	<li><span class="muted">Book list</span></li>
       </ul>
     </div>
   </body>

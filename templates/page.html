@@ -9,20 +9,34 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="/css/default.css" type="text/css"> 
   </head>
-  <body class="container">
-    <h1><a href="main_page">${title}</a></h1>
-    <div id="page">
-      <h2>${page_name} <a id="editSwitch" class="btn btn-success btn-small" href="">Edit</a></h2>
-      <div id="page_body">
-	${page_body}
+  <body>
+    <div id="maindiv" class="container">
+      <h1>${title}</h1>
+      <div id="page">
+	<h2>${page_name} <a id="editSwitch" class="btn btn-success btn-small" href="">Edit</a></h2>
+	<div id="page_body" class="panel">
+	  ${page_body}
+	</div>
+	<div id="page_body_edit">
+	  <form action="" method="POST">
+	    <textarea name="page_body_text" id="page_body_text">${page_body_raw}</textarea>
+	    <p><input type="submit" class="btn btn-success" value="update"/><a id="cancelEdit" class="btn btn-danger btn-small" href="">Cancel</a></p>
+	  </form>
+	</div>
       </div>
-      <div id="page_body_edit">
-	<form action="" method="POST">
-	  <textarea cols="80" rows="25" name="page_body_text" id="page_body_text">${page_body_raw}</textarea>
-	  <p><input type="submit" class="btn btn-success" value="update"/><a id="cancelEdit" class="btn btn-danger btn-small" href="">Cancel</a></p>
-	</form>
-      </div>
-    </div>
-    <p id="footer"><a href="/">Book list</a></p>
+      <ul id="footer" class="breadcrumb">
+	<li>
+	  <a href="/">Book list</a> 
+	  <span class="divider">&nbsp;&gt;&nbsp;<span>
+	</li>
+	<li>
+	  <a href="main_page">${title}</a>
+	  <span class="divider">&nbsp;&gt;&nbsp;<span>
+	</li>
+	<li>
+	  <span class="muted">${page_name}</span>
+	</li>
+      </ul>
+    <div>
   </body>
 </html>
