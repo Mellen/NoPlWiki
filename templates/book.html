@@ -9,34 +9,48 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="/css/default.css" type="text/css"> 
   </head>
-  <body class="container">
-    <h1>${title}</h1>
-    <div id="page">
-      <h2>Main <a id="editSwitch" class="btn btn-success btn-small" href="">Edit</a></h2>
-      <div id="page_body">
-	${page_body}
+  <body>
+    <div id="maindiv" class="container">
+      <h1>${title}</h1>
+      <div class="container-fluid">
+	<div class="row-fluid">
+	  <div id="contents" class="span3">
+	    <h3>Contents</h3>
+	    <ul id="page_list" class="panel">
+	      % for page in pages:
+              ${make_list_item(page)}
+	      % endfor
+	    </ul>
+	    <form action='/book/${title}' method='GET'>
+	      <h4>Create a new page</h4>
+	      <input type="text" name="page_name"/>
+	      <input type="submit" class="btn btn-success" value="create"/>
+	    </form>
+	  </div>
+	  <div id="page" class="span9">
+	    <h2>Main <a id="editSwitch" class="btn btn-success btn-small" href="">Edit</a></h2>
+	    <div id="page_body" class="panel">
+	      ${page_body}
+	    </div>
+	    <div id="page_body_edit" >
+	      <form action="" method="POST">
+		<textarea cols="80" rows="25" name="page_body_text" id="page_body_text">${page_body_raw}</textarea>
+		<p><input type="submit" class="btn btn-success" value="update"/> <a id="cancelEdit" class="btn btn-danger btn-small" href="">Cancel</a></p>
+	      </form>
+	    </div>
+	  </div>
+	</div>
       </div>
-      <div id="page_body_edit" >
-	<form action="" method="POST">
-	  <textarea cols="80" rows="25" name="page_body_text" id="page_body_text">${page_body_raw}</textarea>
-	  <p><input type="submit" class="btn btn-success" value="update"/> <a id="cancelEdit" class="btn btn-danger btn-small" href="">Cancel</a></p>
-	</form>
-      </div>
-    </div>
-    <div id="contents">
-      <h2>Contents</h2>
-      <ul id="page_list" class="panel">
-	% for page in pages:
-            ${make_list_item(page)}
-	% endfor
+      <ul id="footer" class="breadcrumb">
+	<li>
+	  <a href="/">Book list</a>
+	  <span class="divider">&nbsp;&gt;&nbsp;<span>
+	</li>
+	<li>
+	  <span class="muted">${title}</span>
+	</li>
       </ul>
-      <form action='/book/${title}' method='GET'>
-	<h2>Create a new page</h2>
-	<input type="text" name="page_name"/>
-	<input type="submit" class="btn btn-success" value="create"/>
-      </form>
     </div>
-    <p><a href="/">Book list</a></p>
   </body>
 </html>
 
