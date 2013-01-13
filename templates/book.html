@@ -12,6 +12,15 @@
   <body>
     <div id="maindiv" class="container">
       <h1>${title}</h1>
+      <ul id="footer" class="breadcrumb">
+	<li>
+	  <a href="/">Book list</a>
+	  <span class="divider">&nbsp;&gt;&nbsp;<span>
+	</li>
+	<li>
+	  <span class="muted">${title}</span>
+	</li>
+      </ul>
       <div class="container-fluid">
 	<div class="row-fluid">
 	  <div id="contents" class="span3">
@@ -22,7 +31,7 @@
 	      % endfor
 	    </ul>
 	    <form action='/book/${title}' method='GET'>
-	      <h4>Create a new page</h4>
+	      <span><strong>Create a new page</strong></span>
 	      <input type="text" name="page_name"/>
 	      <input type="submit" class="btn btn-success" value="create"/>
 	    </form>
@@ -41,15 +50,6 @@
 	  </div>
 	</div>
       </div>
-      <ul id="footer" class="breadcrumb">
-	<li>
-	  <a href="/">Book list</a>
-	  <span class="divider">&nbsp;&gt;&nbsp;<span>
-	</li>
-	<li>
-	  <span class="muted">${title}</span>
-	</li>
-      </ul>
     </div>
   </body>
 </html>
