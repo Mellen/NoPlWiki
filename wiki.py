@@ -41,6 +41,10 @@ conf = {
     '/js':{
         'tools.staticdir.on': True,
         'tools.staticdir.dir': os.path.join(current_dir, 'js'),
+        },
+    '/css':{
+        'tools.staticdir.on': True,
+        'tools.staticdir.dir': os.path.join(current_dir, 'css'),
         }
 }
 
