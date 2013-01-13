@@ -1,7 +1,23 @@
 .panel
 {
     background: #EAEAEA;
-    display:inline-block;
     padding:2em;
-    border-radius:144em/233em;
+    border-radius:1em/1.75em;
+}
+
+body
+{
+    background:#757575;
+}
+
+#maindiv
+{
+    background:#fff;
+    padding-left:0.5em;
+    padding-right:0.5em;
+}
+
+#footer
+{
+    margin-top:0.5em;
 }
