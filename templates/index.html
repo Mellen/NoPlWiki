@@ -1,19 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <title>Novel Planning Wiki</title>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js" type="text/javascript" language="JavaScript"></script>
     <script src="js/index.js" type="text/javascript" language="JavaScript"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="css/default.css" type="text/css"> 
   </head>
-  <body>
+  <body class="container">
     <h1>Novel Planning Wiki</h1>
-    <form action="book" method="GET">
+    <form action="book" method="GET" class="panel">
       <p><label>Novel Title:</label> <input type="text" name="title"/></p>
-      <p><input type="submit" value="Create Novel Plan"/></p>
+      <p><input type="submit" class="btn btn-success" value="Create Novel Plan"/></p>
     </form>
     <div>
       <h2>Novel Plans</h2>
-      <ul id="bookList">
+      <ul id="bookList" class="panel">
       % for book in book_list:
           % if book != 'system.indexes':
               ${make_list_item(book)}
@@ -26,6 +29,6 @@
 
 <%def name="make_list_item(book)">
 <li>
-  <a href="book/${book}">${book}</a> <input type="button" value="Delete" id="delete${book}" />
+  <a href="book/${book}">${book}</a> <input type="button" class="btn btn-danger btn-mini" value="Delete" id="delete${book}" />
 </li>
 </%def>
