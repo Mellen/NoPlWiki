@@ -45,6 +45,10 @@ conf = {
     '/css':{
         'tools.staticdir.on': True,
         'tools.staticdir.dir': os.path.join(current_dir, 'css'),
+        },
+    '/img':{
+        'tools.staticdir.on': True,
+        'tools.staticdir.dir': os.path.join(current_dir, 'img'),
         }
 }
 

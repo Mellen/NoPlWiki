@@ -1,18 +1,18 @@
 .panel
 {
-    background: #EAEAEA;
+    background: #FFF;
     padding:2em;
     border-radius:1em/1.75em;
 }
 
 body
 {
-    background:#757575;
+    background:url(../img/geko.png) #757575;
 }
 
 #maindiv
 {
-    background:#fff;
+    background:url(../img/white75.png);
     padding-left:0.5em;
     padding-right:0.5em;
     padding-bottom:0.5em;
