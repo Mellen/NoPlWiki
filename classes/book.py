@@ -2,6 +2,7 @@ import cherrypy
 from mako.template import Template
 import markdown
 import os
+import codecs
 from gitInterface import gitInterface
 
 class book(object):
@@ -17,7 +18,7 @@ class book(object):
         pageData = None
 
         if os.path.exists(os.path.join(self.root_path, 'books', title, page_name)):
-            with open(os.path.join(self.root_path, 'books', title, page_name), 'r') as f: 
+            with codecs.open(os.path.join(self.root_path, 'books', title, page_name), mode='r', encoding='utf-8') as f: 
                 pageData = {}
                 pageData['page_name'] = page_name
                 pageData['page_body_raw'] = f.read()
@@ -53,7 +54,7 @@ class book(object):
 
         os.chdir(curDir)
 
-        with open(page_name, 'w') as f:
+        with codecs.open(page_name, mode='w', encoding='utf-8') as f:
             f.write('')
 
         self.git.add(page_name)
@@ -73,7 +74,7 @@ class book(object):
         os.chdir(curDir)
         if change_message is None:
             change_message = 'made a change to '+page_name
-        with open(page_name, 'w') as f:
+        with codecs.open(page_name, mode='w', encoding='utf-8') as f:
             f.write(page_body_text)
         self.git.commit(page_name, change_message)
         os.chdir(self.root_path)
