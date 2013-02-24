@@ -88,6 +88,6 @@ class book(object):
             self.git.commit(page_name, 'removed '+page_name)
             os.chdir(self.root_path)
             pages = self.buildContents(title)
-            template = Template(filename=os.path.join(self.root_path,'templates/page_list.html'))
+            template = Template(filename=os.path.join(self.root_path,'templates/pagelist.html'))
             return template.render(pages=pages, title=title)
         return self.GET(title, 'main_page')
