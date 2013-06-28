@@ -49,8 +49,11 @@ class book(object):
         curDir = os.path.join(self.root_path, 'books', title)
 
         if not os.path.exists(curDir):
+            cherrypy.log('making dirs')
             os.makedirs(curDir)
+            cherrypy.log('git init')
             self.git.init(curDir)
+            cherrypy.log('git init done.')
 
         os.chdir(curDir)
 
